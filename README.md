@@ -10,7 +10,7 @@ Slides and lab material can be found at:
 # Staff
  * David Schedl (@schedldave)
  * Marc Streit (@mstreit)
- * Teaching Assistants: Rosi Grillmair
+ * Teaching Assistant(s): Rosi Grillmair
 
 # Launch
 
