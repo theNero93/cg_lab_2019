@@ -117,7 +117,7 @@ function init(resources) {
   var transformationNode = new TransformationSceneGraphNode(quadTransformationMatrix);
   rootNode.append(transformationNode);
 
-  //TASK 5-3
+  //TASK 5-4
   var staticColorShaderNode = new ShaderSceneGraphNode(createProgram(gl, resources.staticcolorvs, resources.fs));
   transformationNode.append(staticColorShaderNode);
 
