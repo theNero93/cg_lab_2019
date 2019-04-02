@@ -664,6 +664,11 @@ class TransformationSGNode extends SGNode {
     //restore backup
     context.sceneMatrix = previous;
   }
+
+  // For consistency with labs:
+  // setMatrix(matrix) {
+  //   this.matrix = matrix;
+  // }
 }
 
 /**
