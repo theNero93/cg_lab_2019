@@ -108,12 +108,12 @@ function init(resources) {
   //create scenegraph
   rootNode = new SceneGraphNode();
 
-  //Task 3-1
+  //TASK 3-1
   var quadTransformationMatrix = glm.rotateX(90);
   quadTransformationMatrix = mat4.multiply(mat4.create(), quadTransformationMatrix, glm.translate(0.0,-0.5,0));
   quadTransformationMatrix = mat4.multiply(mat4.create(), quadTransformationMatrix, glm.scale(0.5,0.5,1));
 
-  //Task 3-2
+  //TASK 3-2
   var transformationNode = new TransformationSceneGraphNode(quadTransformationMatrix);
   rootNode.append(transformationNode);
 
@@ -242,6 +242,10 @@ function render(timeInMilliseconds) {
 
   rootNode.render(context);
 
+  //TASK 2-0 comment renderQuad & renderRobot out:
+  // renderQuad(context.sceneMatrix, context.viewMatrix);
+  // renderRobot(context.sceneMatrix, context.viewMatrix);
+
   //request another render call as soon as possible
   requestAnimationFrame(render);
 
@@ -262,14 +266,13 @@ function setUpModelViewMatrix(sceneMatrix, viewMatrix) {
 /**
  * returns a new rendering context
  * @param gl the gl context
- * @param shader the shader program to set the projection uniform
+ * @param shader the shader program
  * @returns {ISceneGraphContext}
  */
 function createSceneGraphContext(gl, shader) {
 
   //create a default projection matrix
   projectionMatrix = mat4.perspective(mat4.create(), fieldOfViewInRadians, aspectRatio, 0.01, 10);
-  //set projection matrix
   gl.uniformMatrix4fv(gl.getUniformLocation(shader, 'u_projection'), false, projectionMatrix);
 
   return {
@@ -342,10 +345,13 @@ class QuadRenderNode extends SceneGraphNode {
 
   render(context) {
 
+
     //TASK 2-1
 
-    //setting the model view and projection matrix on shader
+    //setting the model view and projection for the shader
     setUpModelViewMatrix(context.sceneMatrix, context.viewMatrix);
+    gl.uniformMatrix4fv(gl.getUniformLocation(context.shader, 'u_projection'), false, context.projectionMatrix);
+
 
     var positionLocation = gl.getAttribLocation(context.shader, 'a_position');
     gl.bindBuffer(gl.ARRAY_BUFFER, quadVertexBuffer);
@@ -377,8 +383,10 @@ class CubeRenderNode extends SceneGraphNode {
 
   render(context) {
 
-    //setting the model view and projection matrix on shader
+    //setting the model view and projection for the shader
     setUpModelViewMatrix(context.sceneMatrix, context.viewMatrix);
+    gl.uniformMatrix4fv(gl.getUniformLocation(context.shader, 'u_projection'), false, context.projectionMatrix);
+
 
     var positionLocation = gl.getAttribLocation(context.shader, 'a_position');
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexBuffer);
@@ -406,7 +414,7 @@ class CubeRenderNode extends SceneGraphNode {
 /**
  * a transformation node, i.e applied a transformation matrix to its successors
  */
-class TransformationSceneGraphNode extends SceneGraphNode {
+class TransformationSceneGraphNode extends SceneGraphNode { //compare with TransformationSGNode in framework.js
   /**
    * the matrix to apply
    * @param matrix
@@ -438,11 +446,10 @@ class TransformationSceneGraphNode extends SceneGraphNode {
   }
 }
 
-//TASK 5-0
 /**
  * a shader node sets a specific shader for the successors
  */
-class ShaderSceneGraphNode extends SceneGraphNode {
+class ShaderSceneGraphNode extends SceneGraphNode { //compare with ShaderSGNode in framework.js
   /**
    * constructs a new shader node with the given shader program
    * @param shader the shader program to use
@@ -459,9 +466,6 @@ class ShaderSceneGraphNode extends SceneGraphNode {
     context.shader = this.shader;
     //activate the shader
     context.gl.useProgram(this.shader);
-    //set projection matrix
-    gl.uniformMatrix4fv(gl.getUniformLocation(context.shader, 'u_projection'),
-      false, context.projectionMatrix);
     //render children
     super.render(context);
     //restore backup

@@ -103,9 +103,9 @@ function init(resources) {
   //create scenegraph
   rootNode = new SceneGraphNode();
 
-  //Task 3-1
+  //TASK 3-1
 
-  //Task 3-2
+  //TASK 3-2
 
   //TASK 5-4
 
@@ -174,6 +174,7 @@ function render(timeInMilliseconds) {
 
   rootNode.render(context);
 
+  //TASK 2-0 comment renderQuad & renderRobot out:
   renderQuad(context.sceneMatrix, context.viewMatrix);
   renderRobot(context.sceneMatrix, context.viewMatrix);
 
@@ -271,7 +272,7 @@ function setUpModelViewMatrix(sceneMatrix, viewMatrix) {
 /**
  * returns a new rendering context
  * @param gl the gl context
- * @param shader the shader program to set the projection uniform
+ * @param shader the shader program
  * @returns {ISceneGraphContext}
  */
 function createSceneGraphContext(gl, shader) {
@@ -402,7 +403,6 @@ class TransformationSceneGraphNode extends SceneGraphNode {
   }
 }
 
-//TASK 5-0
 /**
  * a shader node sets a specific shader for the successors
  */
@@ -423,8 +423,6 @@ class ShaderSceneGraphNode extends SceneGraphNode {
     context.shader = this.shader;
     //activate the shader
     context.gl.useProgram(this.shader);
-    //set projection matrix
-    gl.uniformMatrix4fv(gl.getUniformLocation(context.shader, 'u_projection'), false, context.projectionMatrix);
     //render children
     super.render(context);
     //restore backup
