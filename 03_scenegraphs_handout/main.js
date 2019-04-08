@@ -191,7 +191,10 @@ function renderQuad(sceneMatrix, viewMatrix) {
   sceneMatrix = mat4.multiply(mat4.create(), sceneMatrix, glm.translate(0.0,-0.5,0));
   sceneMatrix = mat4.multiply(mat4.create(), sceneMatrix, glm.scale(0.5,0.5,1));
 
+  //setting the model view and projection for the shader (needs to be done every time the shader changes)
   setUpModelViewMatrix(sceneMatrix, viewMatrix);
+  gl.uniformMatrix4fv(gl.getUniformLocation(context.shader, 'u_projection'), false, context.projectionMatrix);
+
 
   var positionLocation = gl.getAttribLocation(context.shader, 'a_position');
   gl.bindBuffer(gl.ARRAY_BUFFER, quadVertexBuffer);
@@ -236,7 +239,9 @@ function renderRobot(sceneMatrix, viewMatrix) {
   sceneMatrix = mat4.multiply(mat4.create(), sceneMatrix, glm.rotateY(animatedAngle));
   sceneMatrix = mat4.multiply(mat4.create(), sceneMatrix, glm.translate(0.0,0.4,0));
   sceneMatrix = mat4.multiply(mat4.create(), sceneMatrix, glm.scale(0.4,0.33,0.5));
+  //setting the model view and projection for the shader (needs to be done every time the shader changes)
   setUpModelViewMatrix(sceneMatrix, viewMatrix);
+  gl.uniformMatrix4fv(gl.getUniformLocation(context.shader, 'u_projection'), false, context.projectionMatrix);
   renderCube();
 
   //body
